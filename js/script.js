@@ -26,13 +26,13 @@ design.addEventListener('change', event => {
   }
 
   const colorOptions = Object.values(color);
-  const punsColors = ['cornflowerblue', 'darkslategrey', 'gold'];
-  const heartColors = ['tomato', 'steelblue', 'dimgrey'];
+  const puns = ['cornflowerblue', 'darkslategrey', 'gold'];
+  const heart = ['tomato', 'steelblue', 'dimgrey'];
 
   // using forEach instead of filter
   if (value === 'js puns') {
     colorOptions.forEach(option => {
-      if (punsColors.includes(option.value) ) {
+      if (puns.includes(option.value) ) {
         option.selected = option.value === 'cornflowerblue'; 
         option.hidden = false;
       } else {
@@ -41,7 +41,7 @@ design.addEventListener('change', event => {
     });
   } else if (value === 'heart js') {
     colorOptions.forEach(option => {
-      if (heartColors.includes(option.value)) {
+      if (heart.includes(option.value)) {
         option.selected = option.value === 'tomato'; 
         option.hidden = false;
       } else {
@@ -125,30 +125,30 @@ activities.addEventListener('change', e => {
 // PAyments
 const payment = document.querySelector('#payment');
 const paymentOptions = Object.values(payment);
-const paymentCreditCard = document.querySelector('#credit-card');
-const paymentPayPal = document.querySelector('#paypal');
-const paymentBitcoin = document.querySelector('#bitcoin');
+const creditcard = document.querySelector('#credit-card');
+const paypal = document.querySelector('#paypal');
+const bitcoin = document.querySelector('#bitcoin');
 paymentOptions[0].hidden = true
 payment.value = 'credit card';
 
 const paymentDisplay = (pt) => {
-    paymentCreditCard.style.display = 'none';
-    paymentPayPal.style.display = 'none';
-    paymentBitcoin.style.display = 'none';
+    creditcard.style.display = 'none';
+    paypal.style.display = 'none';
+    bitcoin.style.display = 'none';
     pt.style.display = '';
 }
 
-paymentDisplay(paymentCreditCard);
+paymentDisplay(creditcard);
 
 payment.addEventListener('change', e => {
   const value = e.target.value;
 
   if (value === 'credit card') {
-    paymentDisplay(paymentCreditCard);
+    paymentDisplay(creditcard);
   } else if (value === 'paypal') {
-    paymentDisplay(paymentPayPal);
+    paymentDisplay(paypal);
   } else if (value === 'bitcoin') {
-    paymentDisplay(paymentBitcoin);
+    paymentDisplay(bitcoin);
   }
 })
 
@@ -174,7 +174,6 @@ const validateName = () => {
   var nameError = createErrorElement(name, 'name-error');
   if (name.value === '') {
     validateUnit(name, nameError, 'Required field.', 'block', 'field-error');
-
   } else {
     validateUnit(name, nameError, '', 'none', '');
   }
@@ -211,40 +210,47 @@ const validateActivities = () => {
 
 // Validate CC
 const validateCC = () => {
-  const ccNum = document.querySelector('#cc-num');
-  var ccNumError = createErrorElement(ccNum, 'cc-num-error');
+  const num = document.querySelector('#cc-num');
+  var numError = createErrorElement(num, 'cc-num-error');
 
-  const ccZIP = document.querySelector('#zip');
-  var ccZIPError = createErrorElement(ccZIP, 'cc-zip-error');
+  const zip = document.querySelector('#zip');
+  var zipError = createErrorElement(zip, 'cc-zip-error');
 
-  const ccCVV = document.querySelector('#cvv');
-  var ccCVVError = createErrorElement(ccCVV, 'cc-cvv-error');
+  const cvv = document.querySelector('#cvv');
+  var cvvError = createErrorElement(cvv, 'cc-cvv-error');
 
   // CC Validation
   if (payment.value === 'credit card') {
-
     // CC-Num Validation
-    if (!ccNum.value) {
-      validateUnit(ccNum, ccNumError, 'You must provide a credit card number.', 'block', 'field-error');
-    } else if (!/^[0-9]{13,16}$/.test(ccNum.value)) {
-      validateUnit(ccNum, ccNumError, 'Wrong credit card number, must be 13-16 digits.', 'block', 'field-error');
-    } else {validateUnit(ccNum, ccNumError, '', 'none', '');};
+    if (!num.value) {
+      validateUnit(num, numError, 'You must provide a credit card number.', 'block', 'field-error');
+    } else if (!/^[0-9]{13,16}$/.test(num.value)) {
+      validateUnit(num, numError, 'Wrong credit card number, must be 13-16 digits.', 'block', 'field-error');
+    } else {validateUnit(num, numError, '', 'none', '');};
 
     // ZIP Validation
-    if (!/^[0-9]{5}$/.test(ccZIP.value)) {
-      validateUnit(ccZIP, ccZIPError, 'Zip must be 5 digits.', 'block', 'field-error');
-    } else {validateUnit(ccZIP, ccZIPError, '', 'none', '');};
+    if (!/^[0-9]{5}$/.test(zip.value)) {
+      validateUnit(zip, zipError, 'Zip must be 5 digits.', 'block', 'field-error');
+    } else {validateUnit(zip, zipError, '', 'none', '');};
 
     // CVV Validation
-    if (!/^[0-9]{3}$/.test(ccCVV.value)) {
-      validateUnit(ccCVV, ccCVVError, 'CVV must be 3 digits.', 'block', 'field-error');
-    } else {validateUnit(ccCVV, ccCVVError, '', 'none', '');};
+    if (!/^[0-9]{3}$/.test(cvv.value)) {
+      validateUnit(cvv, cvvError, 'CVV must be 3 digits.', 'block', 'field-error');
+    } else {validateUnit(cvv, cvvError, '', 'none', '');};
   }
 }
 
-// CC keup validation
-const numCC = document.querySelector('#cc-num');
-numCC.addEventListener('keyup', e => {
+// CC keyup validation
+const num = document.querySelector('#cc-num');
+num.addEventListener('keyup', e => {
+  validateCC();
+})
+const zip = document.querySelector('#zip');
+zip.addEventListener('keyup', e => {
+  validateCC();
+})
+const cvv = document.querySelector('#cvv');
+cvv.addEventListener('keyup', e => {
   validateCC();
 })
 
