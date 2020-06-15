@@ -141,7 +141,10 @@ option {
 	font-weight: 500;
 }
 
-
+.field_set{
+	border-color: red;
+	border-style: solid;
+  }
 
 .container {
 	margin: auto;

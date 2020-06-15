@@ -1,3 +1,11 @@
+
+
+
+// credit to 
+// https://github.com/awfy/interactiveform.git
+// https://github.com/shirux/interactiveForm.git
+
+
 var input = document.getElementById("name").focus();
 const job = document.getElementById("title");
 const other = document.getElementById("other-title");
@@ -54,7 +62,6 @@ design.addEventListener('change', event => {
 
 // Activities time matcher aux functions
 const activities = document.querySelector('.activities');
-const activitiesTitle = document.querySelector('.activities legend');
 const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 const cost = document.createElement('div');
 activities.appendChild(cost);
@@ -92,7 +99,11 @@ activities.addEventListener('change', e => {
   const input = e.target;
   const inputChecked = input.checked;
   const activityCost = parseInt(input.getAttribute('data-cost'));
-
+  document.querySelector('.activities').classList.remove("field_set");
+  var activitiesError = document.querySelector('.activities-error');
+  if(activitiesError){
+    activitiesError.style.display = 'none';
+  }
   runningCost+= inputChecked ? +activityCost: -activityCost;
   cost.innerHTML = `
     <p>Total: $${runningCost}.00</p>
@@ -198,12 +209,14 @@ const validateActivities = () => {
   [].forEach.call(document.querySelectorAll('.activities-error'),function(e){
     e.parentNode.removeChild(e);
   });
+  const activitiesTitle = document.querySelector('.activities legend');
 
   var activitiesError = document.createElement('div');
   activitiesError.className = 'activities-error';
   activities.insertBefore(activitiesError, activitiesTitle.nextSibling);
   if (!checkboxChecker) {
     activitiesError.style.display = 'block';
+    document.querySelector('.activities').classList.add("field_set");
     activitiesError.textContent = 'You must pick at least one activity.';
   } else {activitiesError.style.display = 'none';}
 }
@@ -218,8 +231,7 @@ const validateCC = () => {
 
   const cvv = document.querySelector('#cvv');
   var cvvError = createErrorElement(cvv, 'cc-cvv-error');
-
-  // CC Validation
+  
   if (payment.value === 'credit card') {
     // CC-Num Validation
     if (!num.value) {
