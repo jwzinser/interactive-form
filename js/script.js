@@ -1,10 +1,14 @@
 
 
-
-// credit to 
-// https://github.com/awfy/interactiveform.git
-// https://github.com/shirux/interactiveForm.git
-
+/*
+Validation form:
+Adds validation for intersecting dates, considering they might not match exacly,
+but intersect partially.
+Real time CC fields validation.
+credit to 
+https://github.com/awfy/interactiveform.git
+https://github.com/shirux/interactiveForm.git
+*/
 
 var input = document.getElementById("name").focus();
 const job = document.getElementById("title");
