@@ -10,7 +10,7 @@ https://github.com/awfy/interactiveform.git
 https://github.com/shirux/interactiveForm.git
 */
 
-var input = document.getElementById("name").focus();
+document.getElementById("name").focus();
 const job = document.getElementById("title");
 const other = document.getElementById("other-title");
 other.style.display = 'none';
@@ -66,7 +66,6 @@ design.addEventListener('change', event => {
 
 // Activities time matcher aux functions
 const activities = document.querySelector('.activities');
-const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 const cost = document.createElement('div');
 activities.appendChild(cost);
 
@@ -101,13 +100,15 @@ const dayMatcher = (d1,d2) => {
 // Activities
 activities.addEventListener('change', e => {
   const input = e.target;
+
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   const inputChecked = input.checked;
-  const activityCost = parseInt(input.getAttribute('data-cost'));
+  const activityCost = parseInt(e.target.getAttribute('data-cost'));
   document.querySelector('.activities').classList.remove("field_set");
   var activitiesError = document.querySelector('.activities-error');
-  if(activitiesError){
-    activitiesError.style.display = 'none';
-  }
+
+  activitiesError.style.display = 'none';
+  
   runningCost+= inputChecked ? +activityCost: -activityCost;
   cost.innerHTML = `
     <p>Total: $${runningCost}.00</p>
@@ -117,7 +118,6 @@ activities.addEventListener('change', e => {
   if(activityDate){
     dates = dateStartEnd(activityDate);
   }
-
   for (let i = 0; i < checkboxes.length; i += 1) {
     const currentInput = checkboxes[i];
     const currentDate = currentInput.getAttribute('data-day-and-time');
@@ -127,12 +127,13 @@ activities.addEventListener('change', e => {
         if (inputChecked && dateMatcher) {
         // not possible, date intersection
           currentInput.disabled = true;
+
         } else if (!inputChecked && dateMatcher) {
         // possible, no intersection
           currentInput.disabled = false;
+
         }
     }
-
   }
 })
 
@@ -172,21 +173,14 @@ payment.addEventListener('change', e => {
 const validateUnit = (field, errorField, msg, block, className) => {
   field.className = className;
   errorField.style.display = block;
+  errorField.style.color = "red";
   errorField.textContent = msg;
-}
-
-const createErrorElement = (noerror, className) => {
-  var error = document.createElement('div');
-  error.className = className;
-  noerror.parentNode.insertBefore(error, noerror);
-  error = document.querySelector(`.${className}`);
-  return error
 }
 
 // validate name
 const validateName = () => {
   const name = document.querySelector('#name');
-  var nameError = createErrorElement(name, 'name-error');
+  var nameError = document.querySelector('.name-error');
   if (name.value === '') {
     validateUnit(name, nameError, 'Required field.', 'block', 'field-error');
   } else {
@@ -197,7 +191,7 @@ const validateName = () => {
 // validate email
 const validateEmail = () => {
   const email = document.querySelector('#mail');
-  var emailError = createErrorElement(email, 'email-error');
+  var emailError = document.querySelector('.email-error');
 
   if (!/^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\.([a-zA-Z]{2,5})$/.test(email.value)) {
     validateUnit(email, emailError, 'Invalid Email.', 'block', 'field-error');
@@ -208,55 +202,55 @@ const validateEmail = () => {
 
 // Validate activities
 const validateActivities = () => {
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   const checkboxChecker = Array.prototype.slice.call(checkboxes).some(checkbox => checkbox.checked);
-  
-  [].forEach.call(document.querySelectorAll('.activities-error'),function(e){
-    e.parentNode.removeChild(e);
-  });
-  const activitiesTitle = document.querySelector('.activities legend');
 
-  var activitiesError = document.createElement('div');
-  activitiesError.className = 'activities-error';
-  activities.insertBefore(activitiesError, activitiesTitle.nextSibling);
+  var activitiesError = document.querySelector('.activities-error');
   if (!checkboxChecker) {
     activitiesError.style.display = 'block';
     document.querySelector('.activities').classList.add("field_set");
     activitiesError.textContent = 'You must pick at least one activity.';
+    activitiesError.style.color = "red";
   } else {activitiesError.style.display = 'none';}
 }
 
 // Validate CC
 const validateCC = () => {
   const num = document.querySelector('#cc-num');
-  var numError = createErrorElement(num, 'cc-num-error');
+  var numError = document.querySelector('.cc-num-error');
 
   const zip = document.querySelector('#zip');
-  var zipError = createErrorElement(zip, 'cc-zip-error');
+  var zipError = document.querySelector('.cc-zip-error');
 
   const cvv = document.querySelector('#cvv');
-  var cvvError = createErrorElement(cvv, 'cc-cvv-error');
-  
+  var cvvError = document.querySelector('.cc-cvv-error');
+  var validPayment = true;
   if (payment.value === 'credit card') {
     // CC-Num Validation
     if (!num.value) {
       validateUnit(num, numError, 'You must provide a credit card number.', 'block', 'field-error');
+      validPayment = false;
     } else if (!/^[0-9]{13,16}$/.test(num.value)) {
       validateUnit(num, numError, 'Wrong credit card number, must be 13-16 digits.', 'block', 'field-error');
+      validPayment = false;
     } else {validateUnit(num, numError, '', 'none', '');};
 
     // ZIP Validation
     if (!/^[0-9]{5}$/.test(zip.value)) {
       validateUnit(zip, zipError, 'Zip must be 5 digits.', 'block', 'field-error');
+      validPayment = false;
     } else {validateUnit(zip, zipError, '', 'none', '');};
 
     // CVV Validation
     if (!/^[0-9]{3}$/.test(cvv.value)) {
       validateUnit(cvv, cvvError, 'CVV must be 3 digits.', 'block', 'field-error');
+      validPayment = false;
     } else {validateUnit(cvv, cvvError, '', 'none', '');};
   }
+  return validPayment;
 }
 
-// CC keyup validation
+// RealTime validation
 const num = document.querySelector('#cc-num');
 num.addEventListener('keyup', e => {
   validateCC();
@@ -269,13 +263,23 @@ const cvv = document.querySelector('#cvv');
 cvv.addEventListener('keyup', e => {
   validateCC();
 })
+const name = document.querySelector('#name');
+name.addEventListener('keyup', e => {
+  validateName();
+})
+const email = document.querySelector('#mail');
+email.addEventListener('keyup', e => {
+  validateEmail();
+})
 
 // Validations when submited
 const form = document.querySelector('form');
 form.addEventListener('submit', e => {
-  e.preventDefault();
-  validateName();
-  validateEmail();
-  validateActivities();
-  validateCC();
+  var vn = validateName();
+  var ve = validateEmail();
+  var va =validateActivities();
+  var vc = validateCC();
+  if (!(vn && ve && va && vc)) {
+    e.preventDefault();
+}
 });

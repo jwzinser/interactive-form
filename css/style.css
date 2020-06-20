@@ -105,6 +105,9 @@ input[type="checkbox"],
 input[type="radio"] {
 	display: inline-block;
 }
+.activities input[disabled] + label {
+	background: grey;
+  }
 
 button {
 	color: #fff;

@@ -21,10 +21,12 @@
         
         <label for="name">Name:</label>
         <input type="text" id="name" name="user-name">
-        
+        <div class="name-error"></div>
+
         <label for="mail">Email:</label>
         <input type="email" id="mail" name="user-email">
-        
+        <div class="email-error"></div>
+
         <label for="title">Job Role</label>
         <select id="title" name="user-title">
           <option value="full-stack js developer">Full Stack JavaScript Developer</option>
@@ -104,6 +106,8 @@
             <input type="checkbox" name="npm" data-day-and-time="Wednesday 1pm-4pm" data-cost="100"> 
             npm Workshop — Wednesday 1pm-4pm, $100
           </label>
+          <div class="activities-error"></div>
+
                   	
       </fieldset>
       <fieldset>
@@ -121,17 +125,20 @@
 
           <div class="col-6 col">
             <label for="cc-num">Card Number:</label>
-        	  <input id="cc-num" name="user-cc-num" type="text">
+            <input id="cc-num" name="user-cc-num" type="text">
+            <div class="cc-num-error"></div>
           </div>
 
           <div class="col-3 col">
             <label for="zip">Zip Code:</label>
             <input id="zip" name="user-zip" type="text"> 
+            <div class="cc-zip-error"></div>
           </div>
 
           <div class="col-3 col">
             <label for="cvv">CVV:</label>
             <input id="cvv" name="user-cvv" type="text"> 
+            <div class="cc-cvv-error"></div>
           </div>
 
           <label for="exp-month">Expiration Date:</label>
@@ -160,11 +167,11 @@
         </div>
 
         <div id="paypal" class="paypal">
-        	<p>If you selected the PayPal option we'll take you to Paypal's site to set up your billing information, when you click “Register” below.</p>
+        	<p>As you selected the PayPal option we'll take you to Paypal's site to set up your billing information, when you click “Register” below.</p>
         </div> 
 
         <div id="bitcoin" class="bitcoin">
-        	<p>If you selected the Bitcoin option we'll take you to the Coinbase site to set up your billing information. Due to the nature of exchanging Bitcoin, all Bitcoin transactions will be final.</p>
+        	<p>As you selected the Bitcoin option we'll take you to the Coinbase site to set up your billing information. Due to the nature of exchanging Bitcoin, all Bitcoin transactions will be final.</p>
         </div>                  
 
       </fieldset>        
