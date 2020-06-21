@@ -181,23 +181,30 @@ const validateUnit = (field, errorField, msg, block, className) => {
 const validateName = () => {
   const name = document.querySelector('#name');
   var nameError = document.querySelector('.name-error');
+  validName = true;
   if (name.value === '') {
     validateUnit(name, nameError, 'Required field.', 'block', 'field-error');
+    validName = false;
   } else {
     validateUnit(name, nameError, '', 'none', '');
   }
+  return validName;
 }
 
 // validate email
 const validateEmail = () => {
   const email = document.querySelector('#mail');
   var emailError = document.querySelector('.email-error');
+  validEmail = true;
 
   if (!/^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\.([a-zA-Z]{2,5})$/.test(email.value)) {
     validateUnit(email, emailError, 'Invalid Email.', 'block', 'field-error');
+    validEmail = false;
+
   } else {
     validateUnit(email, emailError, '', 'none', '');
   }
+  return validEmail;
 }
 
 // Validate activities
@@ -206,12 +213,16 @@ const validateActivities = () => {
   const checkboxChecker = Array.prototype.slice.call(checkboxes).some(checkbox => checkbox.checked);
 
   var activitiesError = document.querySelector('.activities-error');
+  validActivities = true;
+
   if (!checkboxChecker) {
     activitiesError.style.display = 'block';
     document.querySelector('.activities').classList.add("field_set");
     activitiesError.textContent = 'You must pick at least one activity.';
     activitiesError.style.color = "red";
+    validActivities = false;
   } else {activitiesError.style.display = 'none';}
+  return validActivities;
 }
 
 // Validate CC
@@ -279,6 +290,7 @@ form.addEventListener('submit', e => {
   var ve = validateEmail();
   var va =validateActivities();
   var vc = validateCC();
+  
   if (!(vn && ve && va && vc)) {
     e.preventDefault();
 }
